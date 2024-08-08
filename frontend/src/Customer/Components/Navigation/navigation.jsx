@@ -21,6 +21,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button, Menu, MenuItem, Avatar } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 const navigation = {
   categories: [
@@ -154,6 +155,7 @@ const navigation = {
 
 function Navigation() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
@@ -172,6 +174,12 @@ function Navigation() {
 
   const handleClose = () => {
     setOpenAuthModal(false);
+  };
+
+  const handleCategoryClick = (category, section, item, close) => {
+    console.log(category);
+    navigate(`/${category}/${section}/${item}`);
+    close();
   };
 
   return (
@@ -435,11 +443,18 @@ function Navigation() {
                                         <li
                                           key={item.name}
                                           className="flex">
-                                          <a
-                                            href={item.href}
-                                            className="hover:text-gray-800">
+                                          <p
+                                            onClick={() =>
+                                              handleCategoryClick(
+                                                category.id,
+                                                section.name,
+                                                item.name,
+                                                close
+                                              )
+                                            }
+                                            className="hover:text-gray-800 cursor-pointer">
                                             {item.name}
-                                          </a>
+                                          </p>
                                         </li>
                                       ))}
                                     </ul>
@@ -490,7 +505,12 @@ function Navigation() {
                         <MenuItem onClick={handleCloseUserMenu}>
                           Profile
                         </MenuItem>
-                        <MenuItem>Orders</MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            navigate("/account/orders");
+                          }}>
+                          My Orders
+                        </MenuItem>
                         <MenuItem>LogOut</MenuItem>
                       </Menu>
                     </div>
