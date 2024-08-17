@@ -24,7 +24,7 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private String price;
+    private int price;
 
     @Column(name = "discounted_price")
     private int discountedPrice;
@@ -61,7 +61,18 @@ public class Product {
     @JoinColumn(name="category_id")
     private Category category;
 
+    @Column(name="quantity")
+    private int quantity;
+
     private LocalDateTime createdAt;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public Product() {
     }
@@ -90,11 +101,11 @@ public class Product {
         this.description = description;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -146,6 +157,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -186,7 +198,7 @@ public class Product {
         this.createdAt = createdAt;
     }
 
-    public Product(Long id, String title, String description, String price, int discountedPrice, int discountPercent, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
+    public Product(Long id, String title, String description, int price, int discountedPrice, int discountPercent, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
