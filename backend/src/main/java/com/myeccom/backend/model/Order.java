@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Table
-@Entity(name="order")
+@Entity(name="orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -31,7 +31,7 @@ public class OrderItem {
 
     private LocalDateTime deliveryDate;
 
-    OrderItem(){
+    public OrderItem(){
 
     }
 

@@ -2,6 +2,8 @@ package com.myeccom.backend.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="rating")
 public class Rating {
@@ -18,6 +20,18 @@ public class Rating {
     private Product product;
 
     private double rating;
+
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+
+    private LocalDateTime createAt;
+
 
     public Rating() {
     }

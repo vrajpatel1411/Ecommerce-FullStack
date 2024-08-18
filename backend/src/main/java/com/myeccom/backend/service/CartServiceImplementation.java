@@ -76,6 +76,6 @@ public  CartServiceImplementation(CartRepository cartRepository,CartItemService 
         cart.setTotalPrice(totalPrice);
         cart.setDiscount(totalPrice-totalDiscountedPrice);
 
-        return null;
+        return cartRepository.save(cart);
     }
 }
