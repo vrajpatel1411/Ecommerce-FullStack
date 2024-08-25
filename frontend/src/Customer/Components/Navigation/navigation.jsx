@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -21,7 +21,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button, Menu, MenuItem, Avatar } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import AuthModel from "../../Auth/AuthModel.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  // deleteReducer,
+  getUser,
+  logoutReducer,
+} from "../../../redux/Auth/registerReducer";
 
 const navigation = {
   categories: [
@@ -156,20 +163,53 @@ const navigation = {
 function Navigation() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [openAuthModal, setOpenAuthModal] = useState(false);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const [openAuthModal, setOpenAuthModal] = useState(() => {
+    if (location.pathname === "/register" || location.pathname === "/login") {
+      return true;
+    }
+    return false;
+  });
+
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
+  const userData = useSelector((state) => state.authReducer);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  const isUserLogin = () => {
+    const jwt = localStorage.getItem("jwt");
+
+    if (jwt != null && userData.user == null) {
+      dispatch(getUser(jwt));
+
+      if (userData.error) {
+        return false;
+      }
+
+      return true;
+    } else if (jwt != null && userData.user != null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    setIsUserLoggedIn(isUserLogin());
+  }, [userData]); // Update when userData changes
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleCloseUserMenu = (event) => {
+  const handleCloseUserMenu = () => {
     setAnchorEl(null);
   };
 
   const handleOpen = () => {
     setOpenAuthModal(true);
+    navigate("/register");
   };
 
   const handleClose = () => {
@@ -177,13 +217,12 @@ function Navigation() {
   };
 
   const handleCategoryClick = (category, section, item, close) => {
-    console.log(category);
     navigate(`/${category}/${section}/${item}`);
     close();
   };
 
   return (
-    <div className="bg-white  ">
+    <div className="bg-white pb-10  ">
       {/* Mobile menu */}
       <Dialog
         open={open}
@@ -481,7 +520,7 @@ function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {true ? (
+                  {isUserLoggedIn ? (
                     <div>
                       <Avatar
                         className="text-white"
@@ -511,7 +550,13 @@ function Navigation() {
                           }}>
                           My Orders
                         </MenuItem>
-                        <MenuItem>LogOut</MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            dispatch(logoutReducer());
+                            navigate("/");
+                          }}>
+                          LogOut
+                        </MenuItem>
                       </Menu>
                     </div>
                   ) : (
@@ -523,21 +568,6 @@ function Navigation() {
                   )}
                 </div>
 
-                {/* <div className="hidden lg:ml-8 lg:flex">
-                  <a
-                    href="#"
-                    className="flex items-center text-gray-700 hover:text-gray-800">
-                    <img
-                      alt=""
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-sm font-medium">CAD</span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
-                </div> */}
-
-                {/* Search */}
                 <div className="flex lg:ml-6">
                   <a
                     href="#"
@@ -570,6 +600,11 @@ function Navigation() {
           </div>
         </nav>
       </header>
+
+      <AuthModel
+        handleClose={handleClose}
+        open={openAuthModal}
+      />
     </div>
   );
 }
