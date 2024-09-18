@@ -20,24 +20,20 @@ public class ReviewServiceImplementation implements ReviewService {
 
     private ProductService productService;
 
-
-
     public ReviewServiceImplementation(ReviewRepository reviewRepository,ProductService productService){
         this.productService=productService;
         this.reviewRepository=reviewRepository;
-
     }
+
     @Override
     public Review createReview(ReviewRequest req, User user) throws productException {
         Product product=productService.findProductById(req.getProductId());
-
         Review review=new Review();
-
         review.setUser(user);
         review.setProduct(product);
         review.setReview(req.getReview());
         review.setCreatedAt(LocalDateTime.now());
-    return reviewRepository.save(review);
+        return reviewRepository.save(review);
     }
 
     @Override

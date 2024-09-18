@@ -12,7 +12,7 @@ import java.util.List;
 @Entity(name="orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="order_id")
@@ -28,7 +28,11 @@ public class Order {
 
     private LocalDateTime deliveryDate;
 
-    @OneToOne
+//    @OneToOne
+//    private Address shippingAddress;
+
+    @ManyToOne // Many orders can share one shipping address
+    @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
     private Address shippingAddress;
 
     @Embedded
@@ -160,6 +164,26 @@ public class Order {
     }
 
     public Order() {
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderId='" + orderId + '\'' +
+                ", user=" + user.toString() +
+                ", orderItems=" + orderItems.toString() +
+                ", orderDate=" + orderDate +
+                ", deliveryDate=" + deliveryDate +
+                ", shippingAddress=" + shippingAddress.toString() +
+                ", paymentDetails=" + paymentDetails +
+                ", totalPrice=" + totalPrice +
+                ", discountedPrice=" + discountedPrice +
+                ", discount=" + discount +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", totalItems=" + totalItems +
+                ", createdAt=" + createdAt +
+                '}';
     }
 
     public Order(Long id, String orderId, User user, List<OrderItem> orderItems, LocalDateTime orderDate, LocalDateTime deliveryDate, Address shippingAddress, PaymentDetails paymentDetails, double totalPrice, Integer discountedPrice, Integer discount, String orderStatus, int totalItems, LocalDateTime createdAt) {

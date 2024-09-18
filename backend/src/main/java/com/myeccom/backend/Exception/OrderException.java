@@ -5,7 +5,7 @@ import org.springframework.core.annotation.Order;
 
 public class OrderException extends Exception {
 
-    OrderException(String msg){
+    public OrderException(String msg){
         super(msg);
     }
 }

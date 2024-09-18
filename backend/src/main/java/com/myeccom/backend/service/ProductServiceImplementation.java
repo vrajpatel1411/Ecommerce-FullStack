@@ -42,9 +42,10 @@ public class ProductServiceImplementation implements ProductService{
     @Override
     public Product createProduct(CreateProductRequest request) {
         Category topLevel=categoryRepository.findByName(request.getTopLevelCategory());
+//        System.out.println("Toplevel-> "+request.getTopLevelCategory());
 
         if(topLevel
-        !=null){
+        ==null){
             Category topLevelCategory=new Category();
             topLevelCategory.setName(request.getTopLevelCategory());
             topLevelCategory.setLevel(1);
@@ -54,39 +55,48 @@ public class ProductServiceImplementation implements ProductService{
         Category secondLevel=categoryRepository.findByNameAndParentCategory(request.getSecondLevelCategory(),topLevel.getName());
 
         if(secondLevel
-                !=null){
+                ==null){
             Category secondLevelCategory=new Category();
-            secondLevelCategory.setName(request.getTopLevelCategory());
-            secondLevelCategory.setLevel(1);
+            secondLevelCategory.setName(request.getSecondLevelCategory());
+            secondLevelCategory.setLevel(2);
+            secondLevelCategory.setParentCategory(topLevel);
             secondLevel=categoryRepository.save(secondLevelCategory);
         }
 
         Category thirdLevel=categoryRepository.findByNameAndParentCategory(request.getThirdLevelCategory(),secondLevel.getName());
 
         if(thirdLevel
-                !=null){
+                ==null){
             Category thirdLevelCategory=new Category();
-            thirdLevelCategory.setName(request.getTopLevelCategory());
-            thirdLevelCategory.setLevel(1);
+            thirdLevelCategory.setName(request.getThirdLevelCategory());
+            thirdLevelCategory.setLevel(3);
+            thirdLevelCategory.setParentCategory(secondLevel);
             thirdLevel=categoryRepository.save(thirdLevelCategory);
         }
 
         Product product=new Product();
-
+//        System.out.println("------------"+request.getImageUrl());
+        System.out.println(request.toString());
         product.setTitle(request.getTitle());
         product.setColor(request.getColor());
         product.setDescription(request.getDescription());
         product.setBrand(request.getBrand());
-        product.setDiscountedPrice(request.getDiscountedPrice());
-        product.setDiscountPercent(request.getDiscountPercent());
-        product.setImageUrl(request.getImageURL());
+        product.setDiscountedPrice(request.getDiscountedPrice()/60);
+        product.setImageUrl(request.getImageUrl());
         product.setBrand(request.getBrand());
-        product.setPrice(request.getPrice());
+        product.setPrice(request.getPrice()/60);
+        int original_price = product.getPrice();
+        int discounted_price = product.getDiscountedPrice();  // Assuming this method exists
+
+// Correct formula to calculate the discount percent
+        int discount_percent = ((original_price - discounted_price) * 100) / original_price;
+
+        product.setDiscountPercent(discount_percent);
         product.setSizes(request.getSize());
         product.setQuantity(request.getQuantity());
         product.setCategory(thirdLevel);
         product.setCreatedAt(LocalDateTime.now());
-
+//        System.out.println("Product=>"+product.toString());
         product=productRepository.save(product);
     return product;
 
@@ -136,7 +146,7 @@ public class ProductServiceImplementation implements ProductService{
         System.out.println("Pageable => "+pageable);
         List<Product> products=productRepository.filterProducts(category,minPrice,maxPrice,minDiscount,sort);
 
-        if(!colors.isEmpty()){
+        if(colors!=null && !colors.isEmpty()){
             products=products.stream().
                                 filter(p->colors.stream()
                                         .anyMatch(c->c.equalsIgnoreCase(p.getColor()))).collect(Collectors.toList());

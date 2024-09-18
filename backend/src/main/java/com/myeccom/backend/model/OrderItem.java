@@ -118,4 +118,19 @@ public class OrderItem {
         this.userId = userId;
         this.deliveryDate = deliveryDate;
     }
+
+//    @Override
+//    public String toString() {
+//        return "OrderItem{" +
+//                "id=" + id +
+//                ", order=" + order +
+//                ", product=" + product +
+//                ", size='" + size + '\'' +
+//                ", quantity=" + quantity +
+//                ", price=" + price +
+//                ", discountedPrice=" + discountedPrice +
+//                ", userId=" + userId +
+//                ", deliveryDate=" + deliveryDate +
+//                '}';
+//    }
 }

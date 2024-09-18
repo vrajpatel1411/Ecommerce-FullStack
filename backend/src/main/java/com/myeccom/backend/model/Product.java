@@ -215,4 +215,26 @@ public class Product {
         this.category = category;
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", discountedPrice=" + discountedPrice +
+                ", discountPercent=" + discountPercent +
+                ", brand='" + brand + '\'' +
+                ", Color='" + Color + '\'' +
+                ", sizes=" + sizes +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", ratings=" + ratings +
+                ", reviews=" + reviews +
+                ", numRatings=" + numRatings +
+                ", category=" + category +
+                ", quantity=" + quantity +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

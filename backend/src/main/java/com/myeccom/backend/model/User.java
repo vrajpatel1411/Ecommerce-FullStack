@@ -159,6 +159,23 @@ public class User {
         this.reviews = reviews;
         this.createdAt = createdAt;
     }
+
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", password='" + password + '\'' +
+//                ", email='" + email + '\'' +
+//                ", role='" + role + '\'' +
+//                ", mobile='" + mobile + '\'' +
+//                ", address=" + address +
+//                ", ratings=" + ratings +
+//                ", reviews=" + reviews +
+//                ", createdAt=" + createdAt +
+//                '}';
+//    }
 }
 
 

@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
 
-    public Category findByName(String name);
+    @Query("select c FROM Category c where c.name=:name")
+    public Category findByName(@Param("name") String name);
 
 
     @Query("select c from Category c "+

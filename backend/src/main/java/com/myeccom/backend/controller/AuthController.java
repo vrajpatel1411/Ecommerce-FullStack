@@ -2,10 +2,12 @@ package com.myeccom.backend.controller;
 
 import com.myeccom.backend.Exception.UserException;
 import com.myeccom.backend.config.JwtProvider;
+import com.myeccom.backend.model.Cart;
 import com.myeccom.backend.model.User;
 import com.myeccom.backend.repository.UserRepository;
 import com.myeccom.backend.request.LoginRequest;
 import com.myeccom.backend.response.AuthResponse;
+import com.myeccom.backend.service.CartService;
 import com.myeccom.backend.service.CustomerUserServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,9 @@ public class AuthController {
     @Autowired
     private CustomerUserServiceImplementation customerUserServiceImplementation;
 
+
+    @Autowired
+    private CartService cartService;
 //    public AuthController(UserRepository userRepository,JwtProvider jwtprovider,PasswordEncoder passwordEncoder,CustomerUserServiceImplementation customerUserServiceImplementation){
 //        this.jwtprovider=jwtprovider;
 //        this.passwordEncoder=passwordEncoder;
@@ -60,8 +65,12 @@ public class AuthController {
         createdUser.setFirstName(firstName);
         createdUser.setLastName(lastName);
 
+
+
         User savedUser= userRepository.save(createdUser);
 
+
+        Cart cart=cartService.createCart(savedUser);
         Authentication authentication=new UsernamePasswordAuthenticationToken(savedUser.getEmail(),savedUser.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

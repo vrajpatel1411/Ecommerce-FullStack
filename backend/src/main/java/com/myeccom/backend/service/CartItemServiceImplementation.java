@@ -92,4 +92,10 @@ public class CartItemServiceImplementation implements CartItemService{
         }
 
     }
+
+    @Override
+    public void removeCartItemByCartId(Cart cart){
+        cartItemRepository.DeleteCartItem(cart);
+    }
+//
 }

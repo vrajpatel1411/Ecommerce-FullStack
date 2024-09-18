@@ -3,6 +3,8 @@ package com.myeccom.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="address")
 public class Address {
@@ -19,6 +21,19 @@ public class Address {
     private String city;
 
     private String province;
+
+    private String zipCode;
+
+    @OneToMany(mappedBy = "shippingAddress")
+    private List<Order> orders;
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
 
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -104,5 +119,20 @@ public class Address {
         this.province = province;
         this.user = user;
         this.mobile = mobile;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", city='" + city + '\'' +
+                ", province='" + province + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", user=" + user +
+                ", mobile='" + mobile + '\'' +
+                '}';
     }
 }

@@ -1,16 +1,16 @@
 package com.myeccom.backend.request;
 
-public class AddItemService {
+public class AddItemRequest {
 
     private Long productId;
     private String size;
     private int quantity;
     private Integer price;
 
-    public AddItemService(){
+    public AddItemRequest(){
 
     }
-    public AddItemService(Long productId, String size, int quantity, Integer price) {
+    public AddItemRequest(Long productId, String size, int quantity, Integer price) {
         this.productId = productId;
         this.size = size;
         this.quantity = quantity;

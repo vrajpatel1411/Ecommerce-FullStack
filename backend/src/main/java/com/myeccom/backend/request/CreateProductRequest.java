@@ -24,7 +24,7 @@ public class CreateProductRequest {
 
     private Set<Size> size=new HashSet<>();
 
-    private String imageURL;
+    private String imageUrl;
 
     private String topLevelCategory;
 
@@ -104,12 +104,12 @@ public class CreateProductRequest {
         this.size = size;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setImageUrl(String imageURL) {
+        this.imageUrl = imageURL;
     }
 
     public String getTopLevelCategory() {
@@ -130,6 +130,25 @@ public class CreateProductRequest {
 
     public String getThirdLevelCategory() {
         return thirdLevelCategory;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateProductRequest{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", discountedPrice=" + discountedPrice +
+                ", discountPercent=" + discountPercent +
+                ", quantity=" + quantity +
+                ", brand='" + brand + '\'' +
+                ", color='" + color + '\'' +
+                ", size=" + size +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", topLevelCategory='" + topLevelCategory + '\'' +
+                ", secondLevelCategory='" + secondLevelCategory + '\'' +
+                ", thirdLevelCategory='" + thirdLevelCategory + '\'' +
+                '}';
     }
 
     public void setThirdLevelCategory(String thirdLevelCategory) {

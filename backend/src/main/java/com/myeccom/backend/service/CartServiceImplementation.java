@@ -1,17 +1,13 @@
 package com.myeccom.backend.service;
 
-import com.myeccom.backend.Exception.CartItemException;
 import com.myeccom.backend.Exception.productException;
 import com.myeccom.backend.model.Cart;
 import com.myeccom.backend.model.CartItem;
 import com.myeccom.backend.model.Product;
 import com.myeccom.backend.model.User;
 import com.myeccom.backend.repository.CartRepository;
-import com.myeccom.backend.repository.ProductRepository;
-import com.myeccom.backend.request.AddItemService;
+import com.myeccom.backend.request.AddItemRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CartServiceImplementation implements CartService {
@@ -34,8 +30,11 @@ public  CartServiceImplementation(CartRepository cartRepository,CartItemService 
     }
 
     @Override
-    public String addCartItem(Long userId, AddItemService req) throws productException {
+    public String addCartItem(Long userId, AddItemRequest req) throws productException {
         Cart cart=cartRepository.findByUserId(userId);
+        if(cart==null){
+            cart=new Cart();
+        }
         Product product=productService.findProductById(req.getProductId());
 
         CartItem isPresent=cartItemService.isCartItemExist(cart,product,req.getSize(),userId);
@@ -77,5 +76,12 @@ public  CartServiceImplementation(CartRepository cartRepository,CartItemService 
         cart.setDiscount(totalPrice-totalDiscountedPrice);
 
         return cartRepository.save(cart);
+    }
+
+    @Override
+    public void deleteCart(Cart  cart){
+        cartItemService.removeCartItemByCartId(cart);
+
+//        cartRepository.delete(cart);
     }
 }
