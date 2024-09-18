@@ -1,7 +1,23 @@
 import { Button, Grid, Box, TextField } from "@mui/material";
 import AddressCard from "../AddressCard/AddressCard";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrders } from "../../../redux/Order/orderSlice";
+import { useNavigate } from "react-router-dom";
+// import { useEffect } from "react";
 
 const DeliveryAddress = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userData = useSelector((state) => state.authReducer);
+
+  const perviousAddressHandler = (add) => {
+    const orderData = {
+      address: add,
+      navigate,
+    };
+    dispatch(createOrders(orderData));
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -10,13 +26,17 @@ const DeliveryAddress = () => {
     const shipping_details = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
-      address: data.get("address"),
+      streetAddress: data.get("address"),
       city: data.get("city"),
-      state: data.get("state"),
-      pincode: data.get("pincode"),
-      mobileNumber: data.get("mobileno"),
+      province: data.get("state"),
+      zipCode: data.get("pincode"),
+      mobile: data.get("mobileno"),
     };
-    console.log("Address =>.", shipping_details);
+    const orderData = {
+      address: shipping_details,
+      navigate,
+    };
+    dispatch(createOrders(orderData));
   };
   return (
     <div>
@@ -29,19 +49,28 @@ const DeliveryAddress = () => {
           lg={5}
           className="border rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll">
           <div className="p-5 py-7 border-b cursor-pointer">
-            <AddressCard />
-            <Button
-              sx={{
-                mt: 2,
-                bgcolor: "RGB(145,85,253)",
-                ":hover": {
-                  bgcolor: "#a16ffd",
-                },
-              }}
-              variant="contained"
-              size="large">
-              Deliver Here
-            </Button>
+            {userData?.user?.address?.map((add, index) => {
+              return (
+                <div
+                  key={index}
+                  className="m-1 rounded ">
+                  <AddressCard address={add} />
+                  <Button
+                    onClick={() => perviousAddressHandler(add)}
+                    sx={{
+                      mt: 2,
+                      bgcolor: "RGB(145,85,253)",
+                      ":hover": {
+                        bgcolor: "#a16ffd",
+                      },
+                    }}
+                    variant="contained"
+                    size="large">
+                    Deliver Here
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </Grid>
         <Grid

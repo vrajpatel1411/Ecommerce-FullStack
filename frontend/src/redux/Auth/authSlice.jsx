@@ -50,7 +50,6 @@ export const loginUser = createAsyncThunk(
 
 export const getUser = createAsyncThunk("user/fetchUser", async (token) => {
   try {
-    console.log("Fetching user");
     const userFectched = await axios.get(`${BASE_API_URL}api/users/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,

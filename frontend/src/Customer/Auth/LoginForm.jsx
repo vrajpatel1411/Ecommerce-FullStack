@@ -1,7 +1,7 @@
 import { Button, Grid, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/Auth/registerReducer";
+import { loginUser } from "../../redux/Auth/authSlice";
 import { useEffect } from "react";
 const LoginForm = ({ close }) => {
   const navigate = useNavigate();

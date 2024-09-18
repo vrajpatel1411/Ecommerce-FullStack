@@ -1,12 +1,13 @@
 import { Grid } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { useNavigate } from "react-router-dom";
-const OrderCard = () => {
+const OrderCard = ({ item }) => {
   const navigate = useNavigate();
+
   return (
     <div
       onClick={() => {
-        navigate(`/account/order/${4}`);
+        navigate(`/account/order/${item.id}`);
       }}
       className="p-5 shadow-sm hover:shadow-2xl rounded-lg shadow-black">
       <Grid
@@ -30,7 +31,7 @@ const OrderCard = () => {
         <Grid
           item
           xs={2}>
-          <p className="">$ 20</p>
+          <p className="">$ {item.discountedPrice}</p>
         </Grid>
         <Grid
           item
@@ -42,9 +43,14 @@ const OrderCard = () => {
                   className="text-green-600 mr-2  text-sm"
                   sx={{ width: "15px", height: "15px" }}
                 />
-                <span>Delivered on March 03</span>
+                <span>
+                  {item.orderStatus.charAt(0).toUpperCase() +
+                    item.orderStatus.slice(1).toLowerCase()}
+                </span>
               </p>
-              <p className="text-xs ">Your Item Has been Delivered</p>
+              <p className="text-xs ">
+                Your Item Has been {item.orderStatus.toLowerCase()} successfully
+              </p>
             </div>
           )}
           {false && (

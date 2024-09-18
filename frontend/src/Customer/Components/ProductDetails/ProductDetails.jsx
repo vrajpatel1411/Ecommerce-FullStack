@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Radio, RadioGroup } from "@headlessui/react";
 import { Rating, Button, Grid, Box, LinearProgress } from "@mui/material";
 import ProductReviewCard from "./ProductReviewCard";
 import HomeSectionCaraousel from "../HomeSection/HomeSectionCarousel";
 import mens_kurta from "../../../Data/mens_kurta";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { findProductById } from "../../../redux/Product/productSlice";
+import { addToCart } from "../../../redux/Cart/cartSlice";
 const product = {
   name: "Basic Tee 6-Pack",
   price: "$192",
@@ -55,17 +58,31 @@ const product = {
 };
 // const reviews = { href: "#", average: 4, totalCount: 117 };
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function ProductDetails() {
   // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+  const data = useSelector((state) => state.productReducer);
+  const products = data?.product;
+  const size = products ? products?.sizes[2] : 0;
+  const [selectedSize, setSelectedSize] = useState(size);
   const navigate = useNavigate();
+  const params = useParams();
+  const dispatch = useDispatch();
+
   const handleAddToCart = () => {
+    const cart = {
+      productId: params.productId,
+      size: selectedSize.name,
+    };
+    dispatch(addToCart(cart));
     navigate("/cart");
   };
+
+  useEffect(() => {
+    const id = params.productId;
+    console.log(id);
+    dispatch(findProductById(id));
+  }, [params.productId]);
+
   return (
     <div className="bg-white px-5 md:px-12 lg:px-20">
       <div className="pt-6">
@@ -73,7 +90,7 @@ export default function ProductDetails() {
           <ol
             role="list"
             className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-            {product.breadcrumbs.map((breadcrumb) => (
+            {product?.breadcrumbs?.map((breadcrumb) => (
               <li key={breadcrumb.id}>
                 <div className="flex items-center">
                   <a
@@ -95,10 +112,10 @@ export default function ProductDetails() {
             ))}
             <li className="text-sm">
               <a
-                href={product.href}
+                href={product?.href}
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600">
-                {product.name}
+                {product?.name}
               </a>
             </li>
           </ol>
@@ -108,13 +125,13 @@ export default function ProductDetails() {
           <div className="flex flex-col items-center">
             <div className="overflow-hidden rounded-lg max-w-[30rem] max-h-[35rem]">
               <img
-                alt={product.images[3].alt}
-                src={product.images[3].src}
+                alt={product?.alt}
+                src={products?.imageUrl}
                 className="h-full w-full object-cover object-center"
               />
             </div>
             <div className="flex flex-wrap space-x-5 justify-center">
-              {product.images.map((pro, index) => (
+              {product?.images.map((pro, index) => (
                 <div
                   key={index}
                   className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] mt-4">
@@ -131,10 +148,10 @@ export default function ProductDetails() {
           <div className="lg:col-span-1 mx-auto max-w-2xl px-4 pb-16 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">
             <div className="lg:col-span-2">
               <h1 className="text-lg lg:text-xl font-semibold text-gray-900">
-                Universaloutfit
+                {products?.brand}
               </h1>
               <h1 className="text-lg lg:text-xl text-gray-900 opacity-60 pt-1">
-                Solid Woman White Top
+                {products?.title}
               </h1>
             </div>
 
@@ -143,9 +160,11 @@ export default function ProductDetails() {
               <h2 className="sr-only">Product information</h2>
 
               <div className="flex space-x-5 items-center text-lg lg:text-xl text-gray-900 mt-6">
-                <p className="font-semibold">$10 </p>
-                <p className="opacity-50 line-through">$15</p>
-                <p className="text-green-600 font-semibold ">34% off</p>
+                <p className="font-semibold">${products?.discountedPrice} </p>
+                <p className="opacity-50 line-through">${products?.price}</p>
+                <p className="text-green-600 font-semibold ">
+                  {products?.discountPercent}% off
+                </p>
               </div>
 
               {/* Reviews */}
@@ -179,17 +198,17 @@ export default function ProductDetails() {
                       value={selectedSize}
                       onChange={setSelectedSize}
                       className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                      {product.sizes.map((size) => (
+                      {product?.sizes.map((size) => (
                         <Radio
                           key={size.name}
                           value={size}
                           disabled={!size.inStock}
-                          className={classNames(
-                            size.inStock
+                          className={
+                            (size.inStock
                               ? "cursor-pointer bg-white text-gray-900 shadow-sm"
                               : "cursor-not-allowed bg-gray-50 text-gray-200",
-                            "group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500 sm:flex-1 sm:py-6"
-                          )}>
+                            "group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500 sm:flex-1 sm:py-6")
+                          }>
                           <span>{size.name}</span>
                           {size.inStock ? (
                             <span
@@ -245,7 +264,7 @@ export default function ProductDetails() {
 
                 <div className="space-y-6">
                   <p className="text-base text-gray-900">
-                    {product.description}
+                    {product?.description}
                   </p>
                 </div>
               </div>
@@ -259,7 +278,7 @@ export default function ProductDetails() {
                   <ul
                     role="list"
                     className="list-disc space-y-2 pl-4 text-sm">
-                    {product.highlights.map((highlight) => (
+                    {product?.highlights.map((highlight) => (
                       <li
                         key={highlight}
                         className="text-gray-400">
@@ -274,7 +293,7 @@ export default function ProductDetails() {
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
 
                 <div className="mt-4 space-y-6">
-                  <p className="text-sm text-gray-600">{product.details}</p>
+                  <p className="text-sm text-gray-600">{product?.details}</p>
                 </div>
               </div>
             </div>

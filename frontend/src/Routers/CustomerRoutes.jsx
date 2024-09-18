@@ -8,6 +8,9 @@ import Navigation from "../Customer/Components/Navigation/navigation";
 import Footer from "../Customer/Components/Footer/footer";
 import Product from "../Customer/Components/Product/Product";
 import ProductDetails from "../Customer/Components/ProductDetails/ProductDetails";
+import { RotateLeft } from "@mui/icons-material";
+import { Success } from "../Customer/Components/PaymentResponse/Success";
+import { Failure } from "../Customer/Components/PaymentResponse/Failure";
 const CustomerRoutes = () => {
   return (
     <div>
@@ -48,6 +51,14 @@ const CustomerRoutes = () => {
         <Route
           path="/account/order/:orderId"
           element={<OrderDetails />}></Route>
+
+        <Route
+          path="/payment/success/:orderId"
+          element={<Success />}></Route>
+
+        <Route
+          path="/payment/failure/:orderId"
+          element={<Failure />}></Route>
       </Routes>
 
       <div>

@@ -15,7 +15,6 @@ import {
 } from "@headlessui/react";
 import {
   Bars3Icon,
-  MagnifyingGlassIcon,
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -28,7 +27,7 @@ import {
   // deleteReducer,
   getUser,
   logoutReducer,
-} from "../../../redux/Auth/registerReducer";
+} from "../../../redux/Auth/authSlice.jsx";
 
 const navigation = {
   categories: [
@@ -122,7 +121,7 @@ const navigation = {
           items: [
             { name: "Tops", href: "#" },
             { name: "Pants", href: "#" },
-            { name: "Sweaters", href: "#" },
+            { name: "mens_kurta", href: "#" },
             { name: "T-Shirts", href: "#" },
             { name: "Jackets", href: "#" },
             { name: "Activewear", href: "#" },
@@ -216,9 +215,14 @@ function Navigation() {
     setOpenAuthModal(false);
   };
 
-  const handleCategoryClick = (category, section, item, close) => {
+  const handleCategoryClick = (
+    category,
+    section,
+    item
+    // , close
+  ) => {
     navigate(`/${category}/${section}/${item}`);
-    close();
+    // close();
   };
 
   return (
@@ -342,37 +346,68 @@ function Navigation() {
               ))}
             </div>
 
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900">
-                  Sign in
-                </a>
+            <div className="space-y-6 border-t flex flex-col border-gray-200 px-4 py-6">
+              <div className=" ">
+                {isUserLoggedIn ? (
+                  <div>
+                    <Avatar
+                      className="text-white"
+                      onClick={handleUserClick}
+                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      sx={{
+                        bgcolor: deepPurple[500],
+                        color: "white",
+                        cursor: "pointer",
+                      }}>
+                      {userData.user?.firstName?.[0] +
+                        userData.user?.lastName?.[0]}
+                    </Avatar>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={openUserMenu}
+                      onClose={handleCloseUserMenu}
+                      MenuListProps={{ "aria-labelledby": "basic-button" }}>
+                      <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/account/orders");
+                        }}>
+                        My Orders
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          dispatch(logoutReducer());
+                          navigate("/");
+                        }}>
+                        LogOut
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={handleOpen}
+                    className="text-base font-medium text-gray-700 hover:text-gray-800">
+                    Sign in
+                  </Button>
+                )}
               </div>
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900">
-                  Create account
-                </a>
-              </div>
-            </div>
 
-            <div className="border-t border-gray-200 px-4 py-6">
-              <a
-                href="#"
-                className="-m-2 flex items-center p-2">
-                <img
-                  alt=""
-                  src="https://tailwindui.com/img/flags/flag-canada.svg"
-                  className="block h-auto w-5 flex-shrink-0"
-                />
-                <span className="ml-3 block text-base font-medium text-gray-900">
-                  CAD
-                </span>
-                <span className="sr-only">, change currency</span>
-              </a>
+              {/* Cart */}
+              <div className="ml-1 flow-root ">
+                <a
+                  href="#"
+                  className="group -m-2 flex items-center p-2">
+                  <ShoppingBagIcon
+                    aria-hidden="true"
+                    className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                  />
+                  <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"></span>
+                  <span className="sr-only">items in cart, view bag</span>
+                </a>
+              </div>
             </div>
           </DialogPanel>
         </div>
@@ -486,9 +521,8 @@ function Navigation() {
                                             onClick={() =>
                                               handleCategoryClick(
                                                 category.id,
-                                                section.name,
-                                                item.name,
-                                                close
+                                                section.id,
+                                                item.name
                                               )
                                             }
                                             className="hover:text-gray-800 cursor-pointer">
@@ -533,7 +567,8 @@ function Navigation() {
                           color: "white",
                           cursor: "pointer",
                         }}>
-                        V
+                        {userData.user?.firstName?.[0] +
+                          userData.user?.lastName?.[0]}
                       </Avatar>
                       <Menu
                         id="basic-menu"
@@ -568,29 +603,18 @@ function Navigation() {
                   )}
                 </div>
 
-                <div className="flex lg:ml-6">
-                  <a
-                    href="#"
-                    className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
-                    <MagnifyingGlassIcon
-                      aria-hidden="true"
-                      className="h-6 w-6"
-                    />
-                  </a>
-                </div>
-
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
                   <a
                     href="#"
                     className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
+                      onClick={() => navigate("/cart")}
                       aria-hidden="true"
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      2
+                      {/* {cartData?.cart?.cartItems.length} */}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </a>

@@ -2,7 +2,7 @@ import { Button, Grid, TextField } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../redux/Auth/registerReducer";
+import { registerUser } from "../../redux/Auth/authSlice";
 import { useEffect } from "react";
 const SignUp = ({ close }) => {
   const navigate = useNavigate();

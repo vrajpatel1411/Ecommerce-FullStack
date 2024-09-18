@@ -6,7 +6,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div
-      onClick={() => navigate(`/product/${5}`)}
+      onClick={() => navigate(`/product/${product.id}`)}
       className="productCard w-[15rem] m-3 transition-all cursor-pointer ">
       <div className="h-[20rem] ">
         <img
@@ -21,14 +21,10 @@ const ProductCard = ({ product }) => {
           <p>{product.title}</p>
         </div>
         <div className="flex items-center space-x-2">
-          <p className="font-semibold">
-            ${Math.round(product.discountedPrice / 60)}
-          </p>
-          <p className="line-through opacity-50">
-            ${Math.round(product.price / 60)}
-          </p>
+          <p className="font-semibold">${product.discountedPrice}</p>
+          <p className="line-through opacity-50">${product.price}</p>
           <p className="text-green-600 font-semibold">
-            {product.discountPersent}% off
+            {product.discountPercent}% off
           </p>
         </div>
       </div>

@@ -47,7 +47,7 @@ export const singleFilter = [
   },
 
   {
-    id: "disccout",
+    id: "minDiscount",
     name: "Discount Range",
     options: [
       {

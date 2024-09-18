@@ -1,5 +1,8 @@
 import { Grid } from "@mui/material";
 import OrderCard from "./OrderCard";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { userOrderHistory } from "../../../redux/Order/orderSlice";
 
 const orderStatus = [
   {
@@ -20,6 +23,15 @@ const orderStatus = [
   },
 ];
 const Order = () => {
+  const dispatch = useDispatch();
+
+  const { orders } = useSelector((state) => state.orderReducer);
+
+  useEffect(() => {
+    dispatch(userOrderHistory());
+  }, []);
+
+  console.log(orders);
   return (
     <div className="px:5 lg:px-20 py-5">
       <Grid
@@ -59,8 +71,11 @@ const Order = () => {
           item
           xs={9}
           className="space-y-5">
-          {[1, 1, 1, 1].map((item, index) => (
-            <OrderCard key={index} />
+          {orders.map((item, index) => (
+            <OrderCard
+              key={index}
+              item={item}
+            />
           ))}
         </Grid>
       </Grid>
