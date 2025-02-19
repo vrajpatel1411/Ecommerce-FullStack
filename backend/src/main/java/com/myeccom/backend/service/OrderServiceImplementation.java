@@ -3,6 +3,7 @@ package com.myeccom.backend.service;
 import com.myeccom.backend.Exception.OrderException;
 import com.myeccom.backend.model.*;
 import com.myeccom.backend.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class OrderServiceImplementation implements OrderService{
     private CartService cartService;
 
 
+    @Autowired
     public OrderServiceImplementation(OrderRepository orderRepository, CartService cartService,AddressRepository addressRepository, UserRepository userRepository,OrderItemService orderItemService,OrderItemRepository orderItemRepository){
         this.cartService=cartService;
         this.orderRepository=orderRepository;

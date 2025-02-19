@@ -4,7 +4,10 @@ import com.myeccom.backend.Exception.OrderException;
 import com.myeccom.backend.model.Order;
 import com.myeccom.backend.response.ApiResponse;
 import com.myeccom.backend.service.OrderService;
+import com.myeccom.backend.service.OrderServiceImplementation;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +18,16 @@ import java.util.List;
 @RequestMapping("/api/admin/orders")
 public class AdminOrderController {
 
+
+    private final OrderService orderService;
+
+
+
     @Autowired
-    private OrderService orderService;
+    AdminOrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
 
     @GetMapping("/")
     public ResponseEntity<List<Order>> getAllOrdersHandler(){

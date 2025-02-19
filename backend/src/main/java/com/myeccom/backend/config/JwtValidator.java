@@ -23,7 +23,7 @@ public class JwtValidator extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt=request.getHeader(JwtConstant.JWT_HEADER);
-
+        System.out.println("JWT "+jwt);
         if(jwt!=null){
 
             // Bearer:kjjk So to remove bearer we used 7
