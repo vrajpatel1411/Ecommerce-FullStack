@@ -1200,4 +1200,5 @@ const mens_kurta = [
       "A traditional garment embodying elegance and grace. Crafted from fine fabrics, it features intricate embroidery and a relaxed fit, providing comfort and style.",
   },
 ];
+
 export default mens_kurta;

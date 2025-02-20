@@ -80,17 +80,6 @@ const navigation = {
             { name: "Belts", href: "#" },
           ],
         },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
-          ],
-        },
       ],
     },
     {
@@ -119,35 +108,25 @@ const navigation = {
           id: "clothing",
           name: "Clothing",
           items: [
-            { name: "Tops", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "mens_kurta", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
+            { name: "Tops", link: "tops", href: "#" },
+            { name: "Pants", link: "pants", href: "#" },
+            { name: "Mens Kurta", link: "mens_kurta", href: "#" },
+            { name: "T-Shirts", link: "mens_tshirts", href: "#" },
+            { name: "Jackets", link: "jackets", href: "#" },
+            { name: "Activewear", link: "activewear", href: "#" },
+            { name: "Browse All", link: "all", href: "#" },
           ],
         },
         {
           id: "accessories",
           name: "Accessories",
           items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
+            { name: "Watches", link: "watches", href: "#" },
+            { name: "Wallets", link: "wallets", href: "#" },
+            { name: "Bags", link: "bags", href: "#" },
+            { name: "Sunglasses", link: "sunglasses", href: "#" },
+            { name: "Hats", link: "hats", href: "#" },
+            { name: "Belts", link: "belts", href: "#" },
           ],
         },
       ],
@@ -522,7 +501,7 @@ function Navigation() {
                                               handleCategoryClick(
                                                 category.id,
                                                 section.id,
-                                                item.name
+                                                item.link
                                               )
                                             }
                                             className="hover:text-gray-800 cursor-pointer">
