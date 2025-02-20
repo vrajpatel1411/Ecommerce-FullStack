@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backendservice  # Name of the service (accessible inside the cluster)
+  labels:
+    app: ecommerce      # Label to help identify the service
+spec:
+  type: LoadBalancer    # Exposes the service externally using a load balancer
+  ports:
+    - port: 8080        # Exposes port 8080 on the LoadBalancer IP
+      targetPort: 8080   # The container's port the traffic will be forwarded to
+  selector:
+    app: ecommerce      # This selects the pods with the label "app: ecommerce"
