@@ -1,0 +1,7 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: ecommerce-backend-cert
+spec:
+  domains:
+    - vrajpatelproject.software

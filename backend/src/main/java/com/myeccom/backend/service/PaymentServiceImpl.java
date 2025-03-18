@@ -15,16 +15,19 @@ public class PaymentServiceImpl implements PaymentService  {
 
     @Value("${stripe.secret.key}")
     private String stripeSecretKey;
+
+    @Value("${frontend.url}")
+    private String url;
     public PaymentResponse createPaymentLink(Order order) throws StripeException {
         Stripe.apiKey=stripeSecretKey;
-        System.out.println(order.getId());
+
         SessionCreateParams params=SessionCreateParams.
                 builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setClientReferenceId(order.getId().toString())
-                .setSuccessUrl("http://localhost:5173/payment/success/"+order.getId())
-                .setCancelUrl("http://localhost:5173/payment/failure/"+order.getId())
+                .setSuccessUrl(url+"/payment/success/"+order.getId())
+                .setCancelUrl(url+"/payment/failure/"+order.getId())
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setQuantity(1L)
                         .setPriceData(
@@ -43,7 +46,7 @@ public class PaymentServiceImpl implements PaymentService  {
 
         PaymentResponse paymentResponse=new PaymentResponse();
         paymentResponse.setPaymentUrl(session.getUrl());
-        System.out.println("Printing the URL =>"+paymentResponse.getPaymentUrl());
+//        System.out.println("Printing the URL =>"+paymentResponse.getPaymentUrl());
         return paymentResponse;
     }
 }

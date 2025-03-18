@@ -2,6 +2,7 @@ package com.myeccom.backend.config;
 
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -23,6 +24,9 @@ import java.util.Collections;
 @Configuration
 public class AppConfig {
 
+    @Value("${frontend.url}")
+    private String url;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
@@ -38,7 +42,7 @@ public class AppConfig {
                                             @Override
                                             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                                                 CorsConfiguration cfg = new CorsConfiguration();
-                                                cfg.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                                                cfg.setAllowedOrigins(Collections.singletonList(url));
                                                 cfg.setAllowedMethods(Collections.singletonList("*"));
                                                 cfg.setAllowCredentials(true);
                                                 cfg.setAllowedHeaders(Collections.singletonList("*"));
