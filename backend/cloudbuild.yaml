@@ -15,7 +15,7 @@ steps:
     args:
       - '-c'
       - |
-        sed -i "s|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:.*|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA|g" kubernetes/deploy.yaml || exit 1
+        sed -i "s|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:.*|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA|g" deploy.yaml || exit 1
         cat deploy.yaml  # Optional: log the updated file for debugging
 
   # Apply the updated deployment yaml
