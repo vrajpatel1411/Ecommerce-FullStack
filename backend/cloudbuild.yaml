@@ -16,12 +16,12 @@ steps:
       - '-c'
       - |
         sed -i "s|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:.*|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA|g" kubernetes/deploy.yaml || exit 1
-        cat kubernetes/deploy.yaml  # Optional: log the updated file for debugging
+        cat deploy.yaml  # Optional: log the updated file for debugging
 
   # Apply the updated deployment yaml
   - name: 'gcr.io/cloud-builders/kubectl'
     dir: 'backend/kubernetes'
-    args: ['apply', '-f', 'kubernetes/deploy.yaml']
+    args: ['apply', '-f', 'deploy.yaml']
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2'  # Replace with your GKE zone, e.g., northamerica-northeast2-a
       - 'CLOUDSDK_CONTAINER_CLUSTER=ecommerce-backend-cluster'  # Replace with your GKE cluster name
