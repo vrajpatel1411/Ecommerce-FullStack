@@ -1,6 +1,7 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
+    dir: 'backend'
     args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA', '.']
 
   # Push the container image to Artifact Registry
@@ -9,6 +10,7 @@ steps:
 
   # Update the deployment yaml with the new image
   - name: 'gcr.io/cloud-builders/gcloud'
+    dir: 'backend/kubernetes'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -18,6 +20,7 @@ steps:
 
   # Apply the updated deployment yaml
   - name: 'gcr.io/cloud-builders/kubectl'
+    dir: 'backend/kubernetes'
     args: ['apply', '-f', 'kubernetes/deploy.yaml']
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2'  # Replace with your GKE zone, e.g., northamerica-northeast2-a
