@@ -112,6 +112,10 @@ kubectl logs ecommerce-backend-deployment-556594b459-6mn8w
 
 - This command retrieves the logs of a specific pod (`ecommerce-backend-deployment-556594b459-6mn8w`) to check if the deployment is running as expected.
 
+## Creating Static IP address and assigning it to the Domain Name
+
+1. Create a Static IP : gcloud compute addresses create ecomemrce-backend --global
+2. Get the IP address : gcloud compute addresses describe ecomemrce-backend
 ## Conclusion
 
 You have successfully:
@@ -126,3 +130,4 @@ You have successfully:
 This process ensures that your application is properly deployed, scalable, and accessible through a load-balanced service on GCP.
 
 ---
+
