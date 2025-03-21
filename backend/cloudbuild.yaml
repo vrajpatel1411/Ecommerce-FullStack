@@ -2,37 +2,50 @@ steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
-    args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA', '.']
+    args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:$COMMIT_SHA', '.']
+    id: 'build-image'
 
   # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA']
+    args: ['push', 'northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:$COMMIT_SHA']
+    id: 'push-image'
+    waitFor: ['build-image']
 
-  # Update the deployment yaml with the new image
+  # Update the Deployment YAML with the new image
   - name: 'gcr.io/cloud-builders/gcloud'
     dir: 'backend/kubernetes'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        sed -i "s|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:.*|northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA|g" deploy.yaml || exit 1
-        cat deploy.yaml  # Optional: log the updated file for debugging
+        sed -i "s|northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:.*|northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:$COMMIT_SHA|g" deploy.yaml || exit 1
+        cat deploy.yaml  # Log for debugging
+    id: 'update-deployment'
+    waitFor: ['push-image']
 
-  # Apply the updated deployment yaml
+  # Apply all Kubernetes manifests
   - name: 'gcr.io/cloud-builders/kubectl'
     dir: 'backend/kubernetes'
-    args: ['apply', '-f', 'deploy.yaml']
+    args: ['apply', '-f', 'deploy.yaml', '-f', 'service.yaml', '-f', 'ingress.yaml', '-f', 'certificate.yaml']
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2'  # Replace with your GKE zone, e.g., northamerica-northeast2-a
-      - 'CLOUDSDK_CONTAINER_CLUSTER=ecommerce-backend-cluster'  # Replace with your GKE cluster name
+      - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'  # Use region for GKE
+      - 'CLOUDSDK_CONTAINER_CLUSTER=ecommerce-backend-cluster'  # Your cluster name
+    id: 'deploy-k8s'
+    waitFor: ['update-deployment']
 
-  # Create a latest tag for the image
+  # Tag the image as 'latest'
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['tag', 'northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:$COMMIT_SHA', 'northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:latest']
+    args: ['tag', 'northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:$COMMIT_SHA', 'northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:latest']
+    id: 'tag-latest'
+    waitFor: ['push-image']
 
-  # Push the latest tag
+  # Push the 'latest' tag
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:latest']
+    args: ['push', 'northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:latest']
+    id: 'push-latest'
+    waitFor: ['tag-latest']
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
+timeout: '1200s'  # 20 minutes timeout

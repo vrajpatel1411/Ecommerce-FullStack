@@ -104,4 +104,9 @@ public class AuthController {
         System.out.println(userDetails);
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
     }
+
+    @GetMapping("/health")
+    private ResponseEntity<String> getHealthCheck(){
+        return new ResponseEntity<>(new String("Working properly..."), HttpStatus.OK);
+    }
 }

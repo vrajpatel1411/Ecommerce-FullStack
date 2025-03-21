@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: ecommerce-backend-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: ecomemrce-backend
+    kubernetes.io/ingress.global-static-ip-name: ecommerce-backend-ip
     networking.gke.io/managed-certificates: ecommerce-backend-cert
     kubernetes.io/ingress.class: "gce"
     ingress.gcp.kubernetes.io/health-check-path: "/auth/health"

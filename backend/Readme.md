@@ -52,7 +52,7 @@ Next, you need to tag the Docker image with the GCP Container Registry URL.
 
 **Command**:
 ```bash
-docker tag ecommerce-backend-image:v1 northamerica-northeast2-docker.pkg.dev/ecommerce-451423/ecommerce-backend/ecommerce-backend:v1
+docker tag ecommerce-backend-image:v1 northamerica-northeast2-docker.pkg.dev/booming-edge-454201-b3/ecommerce-backend/ecommerce-backend:v1
 ```
 
 - This tags the Docker image `ecommerce-backend-image:v1` with the appropriate GCP Container Registry URL (`northamerica-northeast2-docker.pkg.dev`).
