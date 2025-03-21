@@ -28,7 +28,7 @@ steps:
     dir: 'backend/kubernetes'
     args: ['apply', '-f', 'deploy.yaml', '-f', 'service.yaml', '-f', 'ingress.yaml', '-f', 'certificate.yaml']
     env:
-      - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'  # Use region for GKE
+      - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2-a'  # Use region for GKE
       - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'  # Your cluster name
     id: 'deploy-k8s'
     waitFor: ['update-deployment']
