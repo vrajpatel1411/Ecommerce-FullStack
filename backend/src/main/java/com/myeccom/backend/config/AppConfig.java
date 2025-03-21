@@ -42,7 +42,7 @@ public class AppConfig {
                                             @Override
                                             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                                                 CorsConfiguration cfg = new CorsConfiguration();
-                                                cfg.setAllowedOrigins(Collections.singletonList("*"));
+                                                cfg.setAllowedOrigins(Collections.singletonList("https://ecommerce-full-stack-one.vercel.app"));
                                                 cfg.setAllowedMethods(Collections.singletonList("*"));
                                                 cfg.setAllowCredentials(true);
                                                 cfg.setAllowedHeaders(Collections.singletonList("*"));
