@@ -28,17 +28,17 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
-            - name: DB_USERNAME
+            - name: SPRING_DATASOURCE_USERNAME  # Changed from DB_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: db-credentials
                   key: username
-            - name: DB_PASSWORD
+            - name: SPRING_DATASOURCE_PASSWORD  # Changed from DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-credentials
                   key: password
-            - name: STRIPE_SECRET_KEY
+            - name: STRIPE_API_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: stripe-secrets
