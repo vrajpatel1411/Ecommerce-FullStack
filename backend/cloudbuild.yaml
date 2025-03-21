@@ -28,10 +28,19 @@ steps:
     dir: 'backend/kubernetes'
     args: ['apply', '-f', 'deploy.yaml', '-f', 'service.yaml', '-f', 'ingress.yaml', '-f', 'managed-cert.yaml']
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2-a'  # Use region for GKE
-      - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'  # Your cluster name
+      - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'  # Verify this matches your cluster
     id: 'deploy-k8s'
     waitFor: ['update-deployment']
+
+  # Force a rollout restart to ensure new image is used
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['rollout', 'restart', 'deployment/ecommerce-backend-deployment']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
+    id: 'rollout-restart'
+    waitFor: ['deploy-k8s']
 
   # Tag the image as 'latest'
   - name: 'gcr.io/cloud-builders/docker'
@@ -47,5 +56,4 @@ steps:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-
 timeout: '1200s'  # 20 minutes timeout
