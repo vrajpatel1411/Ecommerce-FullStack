@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentServiceImpl implements PaymentService  {
 
-    @Value("${STRIPE_SECRET_KEY}")
+    @Value("${STRIPE_API_SECRET_KEY}")
     private String stripeSecretKey;
 
     @Value("${frontend.url}")
