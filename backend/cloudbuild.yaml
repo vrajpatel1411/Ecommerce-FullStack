@@ -26,7 +26,7 @@ steps:
   # Apply all Kubernetes manifests
   - name: 'gcr.io/cloud-builders/kubectl'
     dir: 'backend/kubernetes'
-    args: ['apply', '-f', 'deploy.yaml', '-f', 'service.yaml', '-f', 'ingress.yaml', '-f', 'managed-cert.yaml']
+    args: ['apply', '-f', 'deploy.yaml','-f','backend.yaml', '-f', 'service.yaml', '-f', 'ingress.yaml', '-f', 'managed-cert.yaml',]
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=northamerica-northeast2-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'  # Verify this matches your cluster

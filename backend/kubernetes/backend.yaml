@@ -1,0 +1,10 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: backend-config
+spec:
+  corsPolicy:
+    allowOrigins: ["https://ecommerce-full-stack-one.vercel.app"]
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allowHeaders: ["*"]
+    allowCredentials: true
